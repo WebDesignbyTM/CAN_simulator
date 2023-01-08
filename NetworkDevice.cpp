@@ -8,7 +8,7 @@ NetworkDevice::NetworkDevice(int id, std::string name)
 
 void NetworkDevice::receiveFrame(CommunicationFrame frame)
 {
-    this->receivedFrames.push_back(frame);
+    this->receivedFrames.push_back(&frame);
 }
 
 std::string NetworkDevice::getName()

@@ -21,6 +21,11 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        NetworkDevice.cpp
+        NetworkDevice.h
+        CanBus.h
+        CommunicationFrame.cpp
+        CommunicationFrame.h
         ${TS_FILES}
 )
 

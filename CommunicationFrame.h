@@ -37,10 +37,11 @@ private:
     void decodeMessage();
 
 public:
+    friend bool operator <(CommunicationFrame const& a, CommunicationFrame const& b);
     CommunicationFrame(unsigned deviceId, unsigned dataLength, unsigned long long data);
     CommunicationFrame(std::bitset<FRAME_MAXIMUM_LENGTH> receivedMessage);
     int getIdentifier();
-    int getTransmittedData();
+    unsigned long long getTransmittedData();
     void setAck(bool received);
     std::bitset<FRAME_MAXIMUM_LENGTH> getEncodedMessage();
 };

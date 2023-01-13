@@ -13,7 +13,7 @@ private:
     std::vector<CommunicationFrame*> receivedFrames;
 public:
     NetworkDevice(int id, std::string name);
-    void receiveFrame(CommunicationFrame frame);
+    void receiveFrame(CommunicationFrame* frame);
     std::string getName();
     void setName(std::string newName);
 };

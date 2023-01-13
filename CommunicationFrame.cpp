@@ -72,7 +72,7 @@ static int calculateCRC(std::bitset<CHECKSUM_INPUT_LENGTH> input, int length)
     for (int i = length; i < length + CRC_POLYNOMIAL_LENGTH - 1; ++i)
         quotient[i] = 0;
 
-    std::cout << "The working copy is " << quotient << '\n';
+//    std::cout << "The working copy is " << quotient << '\n';
 
     while (length)
     {
@@ -399,12 +399,21 @@ void CommunicationFrame::decodeMessage()
 //    std::cout << encodedMessage << '\n';
 }
 
+bool operator <(CommunicationFrame const& a, CommunicationFrame const& b)
+{
+    std::string aStr = a.encodedMessage.to_string();
+    std::string bStr = b.encodedMessage.to_string();
+    std::reverse(aStr.begin(), aStr.end());
+    std::reverse(bStr.begin(), bStr.end());
+    return aStr < bStr;
+}
+
 int CommunicationFrame::getIdentifier()
 {
     return identifier;
 }
 
-int CommunicationFrame::getTransmittedData()
+unsigned long long CommunicationFrame::getTransmittedData()
 {
     return transmittedData;
 }

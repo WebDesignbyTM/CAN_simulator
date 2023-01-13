@@ -9,11 +9,11 @@ class CanBus
 {
 private:
     std::vector<CommunicationFrame> candidateFrames;
-    std::vector<CommunicationFrame> currentFrames;
+    std::vector<CommunicationFrame> framesHistory;
     std::vector<NetworkDevice> subscribedDevices;
     int messageIndex;
 public:
-    void addCandidateMessage();
+    void addCandidateMessage(CommunicationFrame frame);
     void advanceTransmission();
     void subscribeDevice(NetworkDevice device);
 };

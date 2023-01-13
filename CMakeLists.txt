@@ -23,6 +23,7 @@ set(PROJECT_SOURCES
         mainwindow.ui
         NetworkDevice.cpp
         NetworkDevice.h
+        CanBus.cpp
         CanBus.h
         CommunicationFrame.cpp
         CommunicationFrame.h

@@ -25,6 +25,8 @@ set(PROJECT_SOURCES
         NetworkDevice.h
         CanBus.cpp
         CanBus.h
+        componentslistitem.cpp
+        componentslistitem.h
         CommunicationFrame.cpp
         CommunicationFrame.h
         ${TS_FILES}

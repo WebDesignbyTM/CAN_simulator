@@ -1,8 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "qtextbrowser.h"
-#include "CommunicationFrame.h"
-#include "CanBus.h"
 #include <algorithm>
 #include <iostream>
 
@@ -21,42 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->listWidget->addItem("Coded component");
     ui->tabWidget->addTab(new QWidget, "Coded tab");
     QTextBrowser* tb = ui->tab->findChild<QTextBrowser*>("textBrowser");
-//    std::string s = "000001001010000010001000001001"    // initial part of the message
-//                    "111011101010011"                   // the crc (which i had to recompute by hand)
-//                    "1011111111111";                    // final frame bits
-//    std::reverse(s.begin(), s.end());
-//    std::bitset<FRAME_MAXIMUM_LENGTH> bs(s);
-////    std::cout << bs << '\n';
-//    CommunicationFrame cf(bs);
-////    std::cout << cf.getEncodedMessage().to_string() << '\n';
-
-
-//    CommunicationFrame fc(20, 1, 1);
-//    tb->append("\nReversed Data: ");
-//    tb->append(fc.getEncodedMessage().to_string().c_str());
-
-//    CommunicationFrame fc1(97, 4, (1ULL << 32) - 1);
-//    CommunicationFrame fc2(32, 2, 1025);
-//    CommunicationFrame fc3(3, 3, 1026);
-//    CommunicationFrame fc4(102, 1, 3);
-//    CommunicationFrame fc5(66, 1, 44);
-//    CommunicationFrame fc6(11, 5, 90);
-
-//    tb->append("Encoded message:");
-//    tb->append(fc1.getEncodedMessage().to_string().c_str());
-//    tb->append("Encoded message:");
-//    tb->append(fc2.getEncodedMessage().to_string().c_str());
-//    tb->append("Encoded message:");
-//    tb->append(fc3.getEncodedMessage().to_string().c_str());
-//    tb->append("Encoded message:");
-//    tb->append(fc4.getEncodedMessage().to_string().c_str());
-//    tb->append("Encoded message:");
-//    tb->append(fc5.getEncodedMessage().to_string().c_str());
-//    tb->append("Encoded message:");
-//    tb->append(fc6.getEncodedMessage().to_string().c_str());
 
     CanBus cb;
 
@@ -76,10 +40,42 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     cb.advanceTransmission();
+
+
+    // DEVICES SETUP
+//    devices.push_back(new NetworkDevice(16, "Dashboard"));
+//    devices.push_back(new NetworkDevice(43, "Break Sensor"));
+
+//    for (auto device : devices)
+//    {
+//        ui->ComponentList->addItem(device->getName().c_str());
+//    }
+    ui->ComponentList->addItem(new ComponentsListItem(16, "Dashboard"));
+    ui->ComponentList->addItem(new ComponentsListItem(43, "Break Sensor"));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+
+void MainWindow::on_AdditionButton_clicked()
+{
+
+}
+
+
+void MainWindow::on_RemovalButton_clicked()
+{
+    ComponentsListItem* selectedDevice = (ComponentsListItem*) ui->ComponentList->currentItem();
+    delete selectedDevice;
+}
+
+
+void MainWindow::on_ComponentList_itemClicked(QListWidgetItem *item)
+{
+    ComponentsListItem* selectedDeviceItem = (ComponentsListItem*) item;
+    currentDevice = selectedDeviceItem->getDevice();
 }
 

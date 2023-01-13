@@ -29,25 +29,41 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QListWidget" name="listWidget">
+    <widget class="QListWidget" name="ComponentList">
      <property name="geometry">
       <rect>
-       <x>5</x>
+       <x>15</x>
        <y>11</y>
-       <width>161</width>
-       <height>541</height>
+       <width>141</width>
+       <height>461</height>
       </rect>
      </property>
-     <item>
-      <property name="text">
-       <string>First Component</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Second Component</string>
-      </property>
-     </item>
+    </widget>
+    <widget class="QPushButton" name="AdditionButton">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>480</y>
+       <width>131</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add Device</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="RemovalButton">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>520</y>
+       <width>131</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Remove Device</string>
+     </property>
     </widget>
    </widget>
    <widget class="QTabWidget" name="tabWidget">

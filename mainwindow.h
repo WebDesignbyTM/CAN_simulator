@@ -4,6 +4,7 @@
 #include "CommunicationFrame.h"
 #include "CanBus.h"
 #include "componentslistitem.h"
+#include "DeviceAdditionForm.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE

@@ -43,15 +43,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     // DEVICES SETUP
-//    devices.push_back(new NetworkDevice(16, "Dashboard"));
-//    devices.push_back(new NetworkDevice(43, "Break Sensor"));
-
-//    for (auto device : devices)
-//    {
-//        ui->ComponentList->addItem(device->getName().c_str());
-//    }
-    ui->ComponentList->addItem(new ComponentsListItem(16, "Dashboard"));
+    ComponentsListItem* starter = new ComponentsListItem(16, "Dashboard");
+    ui->ComponentList->addItem(starter);
     ui->ComponentList->addItem(new ComponentsListItem(43, "Break Sensor"));
+    currentDevice = starter->getDevice();
 }
 
 MainWindow::~MainWindow()
@@ -62,7 +57,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_AdditionButton_clicked()
 {
-
+    DeviceAdditionForm* deviceAdditionForm = new DeviceAdditionForm();
+    if (deviceAdditionForm->exec())
+    {
+        ui->ComponentList->addItem(
+            new ComponentsListItem(
+                deviceAdditionForm->getDeviceId(),
+                deviceAdditionForm->getDeviceName()
+            )
+        );
+    }
 }
 
 

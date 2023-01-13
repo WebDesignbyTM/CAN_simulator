@@ -25,6 +25,9 @@ set(PROJECT_SOURCES
         NetworkDevice.h
         CanBus.cpp
         CanBus.h
+        DeviceAdditionForm.cpp
+        DeviceAdditionForm.h
+        DeviceAdditionForm.ui
         componentslistitem.cpp
         componentslistitem.h
         CommunicationFrame.cpp

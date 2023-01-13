@@ -25,6 +25,12 @@ set(PROJECT_SOURCES
         NetworkDevice.h
         CanBus.cpp
         CanBus.h
+        FrameWidget.h
+        FrameWidget.cpp
+        FrameWidget.ui
+        FrameDisplay.cpp
+        FrameDisplay.h
+        FrameDisplay.ui
         DeviceAdditionForm.cpp
         DeviceAdditionForm.h
         DeviceAdditionForm.ui

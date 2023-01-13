@@ -5,6 +5,8 @@
 #include "CanBus.h"
 #include "componentslistitem.h"
 #include "DeviceAdditionForm.h"
+#include "FrameDisplay.h"
+#include "FrameWidget.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -27,6 +29,7 @@ private slots:
     void on_ComponentList_itemClicked(QListWidgetItem *item);
 
 private:
+    CanBus canBus;
     NetworkDevice* currentDevice;
     Ui::MainWindow *ui;
 };

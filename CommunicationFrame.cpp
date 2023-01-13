@@ -413,6 +413,11 @@ int CommunicationFrame::getIdentifier()
     return identifier;
 }
 
+unsigned CommunicationFrame::getDataLength()
+{
+    return dataLength;
+}
+
 unsigned long long CommunicationFrame::getTransmittedData()
 {
     return transmittedData;

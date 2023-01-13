@@ -41,6 +41,7 @@ public:
     CommunicationFrame(unsigned deviceId, unsigned dataLength, unsigned long long data);
     CommunicationFrame(std::bitset<FRAME_MAXIMUM_LENGTH> receivedMessage);
     int getIdentifier();
+    unsigned getDataLength();
     unsigned long long getTransmittedData();
     void setAck(bool received);
     std::bitset<FRAME_MAXIMUM_LENGTH> getEncodedMessage();

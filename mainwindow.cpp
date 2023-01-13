@@ -3,6 +3,7 @@
 #include "qtextbrowser.h"
 #include <algorithm>
 #include <iostream>
+#include <QVBoxLayout>
 
 std::string communicationFrameStrings[] = { //
     "0000010010100000100010000010011110111010100111011111111111", // 20, 1, 1; reverse this
@@ -23,22 +24,30 @@ MainWindow::MainWindow(QWidget *parent)
     QTextBrowser* tb = ui->tab->findChild<QTextBrowser*>("textBrowser");
 
     CanBus cb;
+    CommunicationFrame* frames[10];
+    FrameWidget* frameDisplays[10];
+
+    QVBoxLayout* layout = new QVBoxLayout(ui->scrollArea);
 
     for (int i = 1; i < 7; ++i)
     {
         std::bitset<FRAME_MAXIMUM_LENGTH> bs(communicationFrameStrings[i]);
-        CommunicationFrame cf(bs);
+        frames[i] = new CommunicationFrame(bs);
         tb->append("Identifier: ");
-        tb->append(std::to_string(cf.getIdentifier()).c_str());
+        tb->append(std::to_string(frames[i]->getIdentifier()).c_str());
         tb->append("Data: ");
-        tb->append(std::to_string(cf.getTransmittedData()).c_str());
+        tb->append(std::to_string(frames[i]->getTransmittedData()).c_str());
         tb->append("Encoded message: ");
-        tb->append(cf.getEncodedMessage().to_string().c_str());
+        tb->append(frames[i]->getEncodedMessage().to_string().c_str());
         tb->append("\n");
 
-        cb.addCandidateMessage(cf);
+        cb.addCandidateMessage(*frames[i]);
+        frameDisplays[i] = new FrameWidget(frames[i]);
+        layout->addWidget(frameDisplays[i]);
     }
 
+
+    ui->scrollArea->setLayout(layout);
     cb.advanceTransmission();
 
 
@@ -47,6 +56,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->ComponentList->addItem(starter);
     ui->ComponentList->addItem(new ComponentsListItem(43, "Break Sensor"));
     currentDevice = starter->getDevice();
+
+    std::bitset<FRAME_MAXIMUM_LENGTH> bs(communicationFrameStrings[2]);
+    new FrameDisplay(new CommunicationFrame(bs), ui->tab_2);
 }
 
 MainWindow::~MainWindow()

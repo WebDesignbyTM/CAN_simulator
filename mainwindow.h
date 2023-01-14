@@ -5,7 +5,6 @@
 #include "CanBus.h"
 #include "componentslistitem.h"
 #include "DeviceAdditionForm.h"
-#include "FrameDisplay.h"
 #include "FrameWidget.h"
 #include <QMainWindow>
 
@@ -26,7 +25,7 @@ private slots:
 
     void on_RemovalButton_clicked();
 
-    void on_ComponentList_itemClicked(QListWidgetItem *item);
+    void on_componentListWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
 private:
     CanBus canBus;

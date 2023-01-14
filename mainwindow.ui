@@ -106,9 +106,9 @@
      </sizepolicy>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="messageSetupTab">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -116,7 +116,7 @@
       </sizepolicy>
      </property>
      <attribute name="title">
-      <string>Something else</string>
+      <string>Message Setup</string>
      </attribute>
      <widget class="QTextBrowser" name="textBrowser">
       <property name="geometry">

@@ -16,7 +16,7 @@ std::string communicationFrameStrings[] = { //
     "11111111111110011000111100110100010000010001000001000001110000011100000100000", // 3, 3, 1026
     "11111111111111011001001010111110100000100100000110011100000", // 102, 1, 3
     "0011111111111111101100000100000100110100100100000100001100000", // 66, 1, 44
-    "01111111111111101111101100100001011010100000100000100000100000100000101101010100001101000100000" // 11, 5, 90
+    "01111111111111101111101100100001011010100000100000100000100000100000101101010100001101000100000" // 11, 5, 386547056730
 };
 
 MainWindow::MainWindow(QWidget *parent)
@@ -25,7 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->tabWidget->addTab(new QWidget, "Coded tab");
-    QTextBrowser* tb = ui->tab->findChild<QTextBrowser*>("textBrowser");
+    QTextBrowser* tb = ui->messageSetupTab->findChild<QTextBrowser*>("textBrowser");
+
 
     // LAYOUT SETUP
     // centralWidget
@@ -34,8 +35,9 @@ MainWindow::MainWindow(QWidget *parent)
     centralWidgetLayout->addWidget(ui->componentsList, 25);
     ui->componentsList->setMaximumWidth(175);
     centralWidgetLayout->addWidget(ui->tabWidget, 75);
-    ui->tabWidget->setMinimumWidth(600);
+    ui->tabWidget->setMinimumWidth(900);
     ui->tabWidget->setMinimumHeight(500);
+    setMinimumWidth(1130);
 
     // componentsList
     QVBoxLayout* componentsListLayout = new QVBoxLayout();
@@ -54,28 +56,11 @@ MainWindow::MainWindow(QWidget *parent)
     CanBus cb;
     CommunicationFrame* frames[10];
     FrameWidget* frameDisplays[10];
-//    QFrame* tab_2Frame = new QFrame(ui->messageHistoryTab);
     QGridLayout* layout = new QGridLayout(ui->scrollAreaWidgetContents);
-//    QGroupBox *groupBox = new QGroupBox(tr("Exclusive Radio Buttons"), ui->messageHistoryTab);
 
-//    QRadioButton *radio1 = new QRadioButton(tr("&Radio button 1"));
-//    QRadioButton *radio2 = new QRadioButton(tr("R&adio button 2"));
-//    QRadioButton *radio3 = new QRadioButton(tr("Ra&dio button 3"));
-
-//    radio1->setChecked(true);
-
-//    QVBoxLayout *vbox = new QVBoxLayout;
-//    vbox->addWidget(radio1);
-//    vbox->addWidget(radio2);
-//    vbox->addWidget(radio3);
-
-//    ui->scrollArea->setWidgetResizable(true);
-//    ui->scrollAreaWidgetContents->setMinimumSize(1000, 800);
-//    ui->scrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    for (int j = 1; j < 30; ++j)
+    for (int j = 0; j < 30; ++j)
     {
-        int i = j % 6 + 1;
+        int i = j % 7;
         std::bitset<FRAME_MAXIMUM_LENGTH> bs(communicationFrameStrings[i]);
         frames[i] = new CommunicationFrame(bs);
         tb->append("Identifier: ");
@@ -88,34 +73,20 @@ MainWindow::MainWindow(QWidget *parent)
 
         cb.addCandidateMessage(*frames[i]);
         frameDisplays[i] = new FrameWidget(frames[i]);
-//        vbox->addWidget(frameDisplays[i]);
         layout->addWidget(frameDisplays[i]);
         layout->addWidget(frameDisplays[i]);
         layout->addWidget(frameDisplays[i]);
     }
-
-//    layout->addWidget(frameDisplays[2], 0, 0);
-//    layout->addWidget(frameDisplays[3], 1, 0);
-//    layout->addWidget(frameDisplays[4], 2, 0);
-//    layout->addWidget(frameDisplays[1], 3, 0);
-
-
-//    layout->addStretch(1);
-//    ui->messageHistoryTab->setLayout(layout);
-//    vbox->addStretch(1);
-//    groupBox->setLayout(vbox);
+//    layout->addWidget(frameDisplays[0]);
 
     cb.advanceTransmission();
 
 
     // DEVICES SETUP
     ComponentsListItem* starter = new ComponentsListItem(16, "Dashboard");
+    currentDevice = starter->getDevice();
     ui->componentListWidget->addItem(starter);
     ui->componentListWidget->addItem(new ComponentsListItem(43, "Break Sensor"));
-    currentDevice = starter->getDevice();
-
-//    std::bitset<FRAME_MAXIMUM_LENGTH> bs(communicationFrameStrings[2]);
-//    new FrameDisplay(new CommunicationFrame(bs), ui->messageHistoryTab);
 }
 
 MainWindow::~MainWindow()
@@ -129,13 +100,17 @@ void MainWindow::on_AdditionButton_clicked()
     DeviceAdditionForm* deviceAdditionForm = new DeviceAdditionForm();
     if (deviceAdditionForm->exec())
     {
-        ui->componentListWidget->addItem(
-            new ComponentsListItem(
-                deviceAdditionForm->getDeviceId(),
-                deviceAdditionForm->getDeviceName()
-            )
-        );
+        int deviceId = deviceAdditionForm->getDeviceId();
+        std::string deviceName = deviceAdditionForm->getDeviceName();
+        if (0 < deviceId && deviceName.length() != 0)
+            ui->componentListWidget->addItem(
+                new ComponentsListItem(
+                    deviceId,
+                    deviceName
+                )
+            );
     }
+    delete deviceAdditionForm;
 }
 
 
@@ -146,9 +121,11 @@ void MainWindow::on_RemovalButton_clicked()
 }
 
 
-void MainWindow::on_ComponentList_itemClicked(QListWidgetItem *item)
+void MainWindow::on_componentListWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
-    ComponentsListItem* selectedDeviceItem = (ComponentsListItem*) item;
+    ComponentsListItem* selectedDeviceItem = (ComponentsListItem*) current;
     currentDevice = selectedDeviceItem->getDevice();
+    // update all components that depend on the currentDevice
+//    std::cout << currentDevice->getName() << '\n';
 }
 

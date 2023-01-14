@@ -28,9 +28,6 @@ set(PROJECT_SOURCES
         FrameWidget.h
         FrameWidget.cpp
         FrameWidget.ui
-        FrameDisplay.cpp
-        FrameDisplay.h
-        FrameDisplay.ui
         DeviceAdditionForm.cpp
         DeviceAdditionForm.h
         DeviceAdditionForm.ui

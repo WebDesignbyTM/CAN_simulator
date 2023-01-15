@@ -8,14 +8,16 @@
 class NetworkDevice
 {
 private:
-    int deviceId;
+    unsigned deviceId;
     std::string deviceName;
     std::vector<CommunicationFrame*> receivedFrames;
 public:
-    NetworkDevice(int id, std::string name);
+    NetworkDevice(unsigned id, std::string name);
     void receiveFrame(CommunicationFrame* frame);
     std::string getName();
     void setName(std::string newName);
+    unsigned getId();
+    std::vector<CommunicationFrame*> getReceivedFrames();
 };
 
 #endif // NETWORKDEVICE_H

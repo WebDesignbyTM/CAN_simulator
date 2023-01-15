@@ -36,6 +36,16 @@ void FrameSetupForm::setDevice(NetworkDevice* newDevice)
     device = newDevice;
 }
 
+void FrameSetupForm::setBus(CanBus* newBus)
+{
+    bus = newBus;
+}
+
+void FrameSetupForm::addListener(BusView* newListener)
+{
+    listener = newListener;
+}
+
 FrameSetupForm::~FrameSetupForm()
 {
     delete ui;
@@ -43,8 +53,8 @@ FrameSetupForm::~FrameSetupForm()
 
 void FrameSetupForm::on_sendButton_clicked()
 {
-    int dataLength = ui->dLTextbox->text().toUInt();
-    int data = ui->dataTextbox->text().toULongLong();
+    unsigned dataLength = ui->dLTextbox->text().toUInt();
+    unsigned long long data = ui->dataTextbox->text().toULongLong();
     OperationDialog* operationDialog;
 
     if (dataLength > 0 && ui->dataTextbox->text().length() && device != nullptr)
@@ -52,6 +62,14 @@ void FrameSetupForm::on_sendButton_clicked()
         operationDialog = new OperationDialog("Frame successfully sent for arbitration!");
         ui->dLTextbox->clear();
         ui->dataTextbox->clear();
+        bus->addCandidateMessage(
+            new CommunicationFrame(
+                device->getId(),
+                dataLength,
+                data
+            )
+        );
+        listener->fetchCandidateFrames();
     }
     else if (device == nullptr)
         operationDialog = new OperationDialog("No device is selected!");

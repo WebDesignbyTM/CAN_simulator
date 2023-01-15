@@ -1,6 +1,7 @@
 #include "NetworkDevice.h"
+#include <iostream>
 
-NetworkDevice::NetworkDevice(int id, std::string name)
+NetworkDevice::NetworkDevice(unsigned id, std::string name)
 {
     this->deviceId = id;
     this->deviceName = name;
@@ -19,4 +20,14 @@ std::string NetworkDevice::getName()
 void NetworkDevice::setName(std::string newName)
 {
     this->deviceName = newName;
+}
+
+unsigned NetworkDevice::getId()
+{
+    return deviceId;
+}
+
+std::vector<CommunicationFrame*> NetworkDevice::getReceivedFrames()
+{
+    return receivedFrames;
 }

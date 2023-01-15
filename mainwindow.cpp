@@ -24,7 +24,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->tabWidget->addTab(new QWidget, "Coded tab");
+    busView = new BusView();
+    ui->tabWidget->addTab(busView, "Information Bus");
 
 
     // LAYOUT SETUP
@@ -46,9 +47,10 @@ MainWindow::MainWindow(QWidget *parent)
     componentsListLayout->addWidget(ui->RemovalButton);
 
     // messageHistoryTab
+    messageHistoryView = new MessageHistoryView();
     QVBoxLayout* messageHistoryTabLayout = new QVBoxLayout();
     ui->messageHistoryTab->setLayout(messageHistoryTabLayout);
-    messageHistoryTabLayout->addWidget(ui->scrollArea);
+    messageHistoryTabLayout->addWidget(messageHistoryView);
 
     // messageSetupTab
     frameSetupForm = new FrameSetupForm();
@@ -58,34 +60,23 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     // MOCK DATA SETUP
-    CanBus cb;
-    CommunicationFrame* frames[10];
-    FrameWidget* frameDisplays[10];
-    QGridLayout* layout = new QGridLayout(ui->scrollAreaWidgetContents);
-
-    for (int j = 0; j < 30; ++j)
-    {
-        int i = j % 7;
-        std::bitset<FRAME_MAXIMUM_LENGTH> bs(communicationFrameStrings[i]);
-        frames[i] = new CommunicationFrame(bs);
-
-        cb.addCandidateMessage(*frames[i]);
-        frameDisplays[i] = new FrameWidget(frames[i]);
-        layout->addWidget(frameDisplays[i]);
-        layout->addWidget(frameDisplays[i]);
-        layout->addWidget(frameDisplays[i]);
-    }
-//    layout->addWidget(frameDisplays[0]);
-
-    cb.advanceTransmission();
-
+    canBus = new CanBus();
+    frameSetupForm->setBus(canBus);
+    busView->setBus(canBus);
+    frameSetupForm->addListener(busView);
 
     // DEVICES SETUP
-    ComponentsListItem* starter = new ComponentsListItem(16, "Dashboard");
-    currentDevice = starter->getDevice();
-    ui->componentListWidget->addItem(starter);
-    ui->componentListWidget->addItem(new ComponentsListItem(43, "Break Sensor"));
-    ui->componentListWidget->setCurrentItem(starter);
+    ComponentsListItem* firstItem = new ComponentsListItem(16, "Dashboard");
+    ComponentsListItem* secondItem = new ComponentsListItem(43, "Break Sensor");
+    currentDevice = firstItem->getDevice();
+    ui->componentListWidget->addItem(firstItem);
+    ui->componentListWidget->addItem(secondItem);
+    ui->componentListWidget->setCurrentItem(firstItem);
+
+    canBus->subscribeDevice(firstItem->getDevice());
+    canBus->subscribeDevice(secondItem->getDevice());
+    messageHistoryView->setDevice(firstItem->getDevice());
+    busView->addListener(messageHistoryView);
 }
 
 MainWindow::~MainWindow()
@@ -116,6 +107,8 @@ void MainWindow::on_AdditionButton_clicked()
 void MainWindow::on_RemovalButton_clicked()
 {
     ComponentsListItem* selectedDevice = (ComponentsListItem*) ui->componentListWidget->currentItem();
+    if (selectedDevice != nullptr)
+        canBus->unsubscribeDevice(selectedDevice->getDevice());
     delete selectedDevice;
 }
 
@@ -130,5 +123,6 @@ void MainWindow::on_componentListWidget_currentItemChanged(QListWidgetItem *curr
     else
         currentDevice = nullptr;
     frameSetupForm->setDevice(currentDevice);
+    messageHistoryView->setDevice(currentDevice);
 }
 

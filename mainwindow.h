@@ -7,6 +7,8 @@
 #include "DeviceAdditionForm.h"
 #include "FrameWidget.h"
 #include "FrameSetupForm.h"
+#include "BusView.h"
+#include "MessageHistoryView.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -29,9 +31,11 @@ private slots:
     void on_componentListWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
 private:
-    CanBus canBus;
+    CanBus* canBus;
     NetworkDevice* currentDevice;
     FrameSetupForm* frameSetupForm;
+    BusView* busView;
+    MessageHistoryView* messageHistoryView;
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H

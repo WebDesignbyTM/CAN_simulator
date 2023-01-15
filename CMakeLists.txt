@@ -21,10 +21,17 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        LayoutHelper.h
         NetworkDevice.cpp
         NetworkDevice.h
         CanBus.cpp
         CanBus.h
+        MessageHistoryView.h
+        MessageHistoryView.cpp
+        MessageHistoryView.ui
+        BusView.cpp
+        BusView.h
+        BusView.ui
         OperationDialog.cpp
         OperationDialog.h
         OperationDialog.ui

@@ -8,6 +8,7 @@ FrameWidget::FrameWidget(CommunicationFrame* frame, QWidget *parent) :
     ui(new Ui::FrameWidget)
 {
     ui->setupUi(this);
+    setMaximumHeight(200);
 //    this->setMinimumHeight(140);
 //    this->setMinimumWidth(850);
     ui->idTextbox->setText(QString::number(frame->getIdentifier()));

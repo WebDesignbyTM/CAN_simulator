@@ -12,5 +12,6 @@ NetworkDevice* ComponentsListItem::getDevice()
 
 ComponentsListItem::~ComponentsListItem()
 {
-    delete device;
+    if (device != nullptr)
+        delete device;
 }

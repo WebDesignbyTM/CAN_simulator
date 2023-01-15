@@ -47,12 +47,14 @@ void FrameSetupForm::on_sendButton_clicked()
     int data = ui->dataTextbox->text().toULongLong();
     OperationDialog* operationDialog;
 
-    if (dataLength > 0 && ui->dataTextbox->text().length())
+    if (dataLength > 0 && ui->dataTextbox->text().length() && device != nullptr)
     {
         operationDialog = new OperationDialog("Frame successfully sent for arbitration!");
         ui->dLTextbox->clear();
         ui->dataTextbox->clear();
     }
+    else if (device == nullptr)
+        operationDialog = new OperationDialog("No device is selected!");
     else
         operationDialog = new OperationDialog("Input data is not valid!");
     operationDialog->exec();

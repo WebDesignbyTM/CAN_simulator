@@ -85,6 +85,7 @@ MainWindow::MainWindow(QWidget *parent)
     currentDevice = starter->getDevice();
     ui->componentListWidget->addItem(starter);
     ui->componentListWidget->addItem(new ComponentsListItem(43, "Break Sensor"));
+    ui->componentListWidget->setCurrentItem(starter);
 }
 
 MainWindow::~MainWindow()
@@ -121,10 +122,13 @@ void MainWindow::on_RemovalButton_clicked()
 
 void MainWindow::on_componentListWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
-    ComponentsListItem* selectedDeviceItem = (ComponentsListItem*) current;
-    currentDevice = selectedDeviceItem->getDevice();
+    if (current != nullptr)
+    {
+        ComponentsListItem* selectedDeviceItem = (ComponentsListItem*) current;
+        currentDevice = selectedDeviceItem->getDevice();
+    }
+    else
+        currentDevice = nullptr;
     frameSetupForm->setDevice(currentDevice);
-    // update all components that depend on the currentDevice
-//    std::cout << currentDevice->getName() << '\n';
 }
 

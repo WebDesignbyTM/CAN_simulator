@@ -15,12 +15,17 @@ DeviceAdditionForm::~DeviceAdditionForm()
 
 void DeviceAdditionForm::on_buttonBox_accepted()
 {
-
+    if (getDeviceId() && getDeviceName().length())
+    {
+        OperationDialog* operationDialog = new OperationDialog("Device successfully added!");
+        operationDialog->exec();
+        delete operationDialog;
+    }
 }
 
-int DeviceAdditionForm::getDeviceId()
+unsigned DeviceAdditionForm::getDeviceId()
 {
-    return ui->deviceIdTextbox->text().toInt();
+    return ui->deviceIdTextbox->text().toUInt();
 }
 
 std::string DeviceAdditionForm::getDeviceName()

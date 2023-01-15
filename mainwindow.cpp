@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "qtextbrowser.h"
 #include <algorithm>
 #include <iostream>
 #include <QVBoxLayout>
@@ -19,13 +18,13 @@ std::string communicationFrameStrings[] = { //
     "01111111111111101111101100100001011010100000100000100000100000100000101101010100001101000100000" // 11, 5, 386547056730
 };
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     ui->tabWidget->addTab(new QWidget, "Coded tab");
-    QTextBrowser* tb = ui->messageSetupTab->findChild<QTextBrowser*>("textBrowser");
 
 
     // LAYOUT SETUP
@@ -51,6 +50,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->messageHistoryTab->setLayout(messageHistoryTabLayout);
     messageHistoryTabLayout->addWidget(ui->scrollArea);
 
+    // messageSetupTab
+    frameSetupForm = new FrameSetupForm();
+    QVBoxLayout* messageSetupTabLayout = new QVBoxLayout();
+    ui->messageSetupTab->setLayout(messageSetupTabLayout);
+    messageSetupTabLayout->addWidget(frameSetupForm);
+
 
     // MOCK DATA SETUP
     CanBus cb;
@@ -63,13 +68,6 @@ MainWindow::MainWindow(QWidget *parent)
         int i = j % 7;
         std::bitset<FRAME_MAXIMUM_LENGTH> bs(communicationFrameStrings[i]);
         frames[i] = new CommunicationFrame(bs);
-        tb->append("Identifier: ");
-        tb->append(std::to_string(frames[i]->getIdentifier()).c_str());
-        tb->append("Data: ");
-        tb->append(std::to_string(frames[i]->getTransmittedData()).c_str());
-        tb->append("Encoded message: ");
-        tb->append(frames[i]->getEncodedMessage().to_string().c_str());
-        tb->append("\n");
 
         cb.addCandidateMessage(*frames[i]);
         frameDisplays[i] = new FrameWidget(frames[i]);
@@ -100,7 +98,7 @@ void MainWindow::on_AdditionButton_clicked()
     DeviceAdditionForm* deviceAdditionForm = new DeviceAdditionForm();
     if (deviceAdditionForm->exec())
     {
-        int deviceId = deviceAdditionForm->getDeviceId();
+        unsigned deviceId = deviceAdditionForm->getDeviceId();
         std::string deviceName = deviceAdditionForm->getDeviceName();
         if (0 < deviceId && deviceName.length() != 0)
             ui->componentListWidget->addItem(
@@ -125,6 +123,7 @@ void MainWindow::on_componentListWidget_currentItemChanged(QListWidgetItem *curr
 {
     ComponentsListItem* selectedDeviceItem = (ComponentsListItem*) current;
     currentDevice = selectedDeviceItem->getDevice();
+    frameSetupForm->setDevice(currentDevice);
     // update all components that depend on the currentDevice
 //    std::cout << currentDevice->getName() << '\n';
 }

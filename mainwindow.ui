@@ -118,16 +118,6 @@
      <attribute name="title">
       <string>Message Setup</string>
      </attribute>
-     <widget class="QTextBrowser" name="textBrowser">
-      <property name="geometry">
-       <rect>
-        <x>15</x>
-        <y>11</y>
-        <width>571</width>
-        <height>301</height>
-       </rect>
-      </property>
-     </widget>
     </widget>
     <widget class="QWidget" name="messageHistoryTab">
      <property name="sizePolicy">

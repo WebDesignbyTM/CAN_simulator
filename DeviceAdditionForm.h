@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "NetworkDevice.h"
+#include "OperationDialog.h"
 
 namespace Ui {
 class DeviceAdditionForm;
@@ -14,7 +15,7 @@ class DeviceAdditionForm : public QDialog
 
 public:
     explicit DeviceAdditionForm(QWidget *parent = nullptr);
-    int getDeviceId();
+    unsigned getDeviceId();
     std::string getDeviceName();
     ~DeviceAdditionForm();
 

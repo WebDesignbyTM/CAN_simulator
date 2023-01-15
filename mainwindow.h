@@ -6,6 +6,7 @@
 #include "componentslistitem.h"
 #include "DeviceAdditionForm.h"
 #include "FrameWidget.h"
+#include "FrameSetupForm.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -30,6 +31,7 @@ private slots:
 private:
     CanBus canBus;
     NetworkDevice* currentDevice;
+    FrameSetupForm* frameSetupForm;
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H
